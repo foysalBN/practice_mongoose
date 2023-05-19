@@ -1,4 +1,4 @@
-import mongoose, { Model, Schema } from 'mongoose';
+import mongoose, { Schema, model } from 'mongoose';
 import app from './app';
 import { NextFunction, Request, Response } from 'express';
 
@@ -25,7 +25,8 @@ async function connectDatabase() {
             const userSchema = new Schema<IUser>({
                 id: {
                     type: String,
-                    required: true
+                    required: true,
+                    unique: true,
                 },
                 name: {
                     type: String,
@@ -46,8 +47,22 @@ async function connectDatabase() {
                 },
             })
             // Create model 
-            const User = new Model<IUser>('user', userSchema)
+            const User = model<IUser>('User', userSchema)
 
+
+            const createUserToDB = async () => {
+
+                const newUser = new User({
+                    id: "21321",
+                    name: "foysal",
+                    email: "hablu@gmail.com",
+                    gender: "male",
+                    dateOfBirth: "21-1-2000"
+                })
+                await newUser.save()
+                console.log("🧨user:", newUser)
+            }
+            createUserToDB()
 
 
 
