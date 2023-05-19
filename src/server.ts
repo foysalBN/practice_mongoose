@@ -14,40 +14,9 @@ async function connectDatabase() {
                 Connect to MongoDB. 
             */
 
-            interface IUser {
-                id: string,
-                name: string,
-                email: string,
-                gender: "male" | 'female',
-                dateOfBirth?: string
-            }
 
-            const userSchema = new Schema<IUser>({
-                id: {
-                    type: String,
-                    required: true,
-                    unique: true,
-                },
-                name: {
-                    type: String,
-                    required: true
-                },
-                email: {
-                    type: String,
-                    required: true
-                },
-                gender: {
-                    type: String,
-                    enum: ["male", "female"],
-                    required: true
-                },
-                dateOfBirth: {
-                    type: String,
-                    required: false
-                },
-            })
-            // Create model 
-            const User = model<IUser>('User', userSchema)
+
+
 
 
             const createUserToDB = async () => {
