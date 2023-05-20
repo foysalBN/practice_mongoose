@@ -1,8 +1,11 @@
 import express, { Application } from 'express';
 import cors from 'cors'
 
-const port: number = 5000
+//Application Routes
+import userRoutes from './app/modules/user/user.route'
+
 const app: Application = express()
+
 
 //using cors
 app.use(cors())
@@ -12,8 +15,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-})
+app.use('/api/v1/user', userRoutes)
+
 
 export default app
