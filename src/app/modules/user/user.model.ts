@@ -1,15 +1,25 @@
-import { Schema, model } from "mongoose"
-import { IUser } from "./user.interface"
+import { Model, Schema, model } from "mongoose"
+import { IUser, IUserMethods } from "./user.interface"
 
-const userSchema = new Schema<IUser>({
+
+// Create a new Model type that knows about IUserMethods...
+type UserModel = Model<IUser, {}, IUserMethods>;
+
+const userSchema = new Schema<IUser, UserModel, IUserMethods>({
     id: {
         type: String,
         required: true,
         unique: true,
     },
     name: {
-        type: String,
-        required: true
+        firstName: {
+            type: String,
+            required: true
+        },
+        lastName: {
+            type: String,
+            required: true
+        }
     },
     email: {
         type: String,
@@ -26,6 +36,12 @@ const userSchema = new Schema<IUser>({
     },
 })
 
+userSchema.method('fullName', function fullName() {
+    return this.name.firstName + ' ' + this.name.lastName;
+});
+
 // Create model 
-const User = model<IUser>('User', userSchema)
+const User = model<IUser, UserModel>('User', userSchema)
+
+
 export default User
