@@ -1,9 +1,9 @@
 import { Model, Schema, model } from "mongoose"
-import { IUser, IUserMethods } from "./user.interface"
+import { IUser, IUserMethods, UserModel } from "./user.interface"
 
 
 // Create a new Model type that knows about IUserMethods...
-type UserModel = Model<IUser, {}, IUserMethods>;
+// type UserModel = Model<IUser, {}, IUserMethods>;
 
 const userSchema = new Schema<IUser, UserModel, IUserMethods>({
     id: {
@@ -25,6 +25,10 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>({
         type: String,
         required: true
     },
+    role: {
+        type: String,
+        enum: ['admin', 'user']
+    },
     gender: {
         type: String,
         enum: ["male", "female"],
@@ -36,6 +40,12 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>({
     },
 })
 
+// :Promise<IUser[]>
+userSchema.static("getAdminUsers", function getAdminUsers() {
+    return this.find({ role: "admin" })
+})
+
+// instance method
 userSchema.method('fullName', function fullName() {
     return this.name.firstName + ' ' + this.name.lastName;
 });
